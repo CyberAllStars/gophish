@@ -56,6 +56,7 @@ const dismiss = () => {
 }
 
 const edit = (id) => {
+    $("#username").attr("disabled", false);
     $("#modalSubmit").unbind('click').click(() => {
         save(id)
     })
@@ -73,6 +74,9 @@ const edit = (id) => {
                 $("#role").trigger("change")
                 $("#force_password_change_checkbox").prop('checked', user.password_change_required)
                 $("#account_locked_checkbox").prop('checked', user.account_locked)
+                if (user.username == "admin") {
+                    $("#username").attr("disabled", true);
+                }
             })
             .error(function () {
                 errorFlash("Error fetching user")
@@ -83,6 +87,14 @@ const edit = (id) => {
 const deleteUser = (id) => {
     var user = users.find(x => x.id == id)
     if (!user) {
+        return
+    }
+    if (user.username == "admin") {
+        Swal.fire({
+            title: "Unable to Delete User",
+            text: "The user account " + escapeHtml(user.username) + " cannot be deleted.",
+            type: "info"
+        });
         return
     }
     Swal.fire({
