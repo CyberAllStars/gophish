@@ -1,0 +1,19 @@
+{{- if .Values.configMap }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gophish.fullname" . }}
+  labels:
+    {{- include "gophish.labels" . | nindent 4 }}
+data:
+  config.json: "{\n\t\"admin_server\": {\n\t\t\"listen_url\": \"{{- .Values.configMap.admin_server_listen_url  }}\",\n\t\t\"use_tls\":
+   {{- .Values.configMap.admin_server_use_tls}},\n\t\t\"cert_path\": \"{{- .Values.configMap.admin_server_cert_path}} \",\n\t\t\"key_path\": \"{{- .Values.configMap.admin_server_key_path}}\"\n\t},\n\t\"phish_server\":
+    {\n\t\t\"listen_url\": \"{{- .Values.configMap.phish_server_listen_url }}\",\n\t\t\"use_tls\": {{- .Values.configMap.phish_server_use_tls}},\n\t\t\"cert_path\":
+    \"{{- .Values.configMap.phish_server_cert_path}}\",\n\t\t\"key_path\": \"{{- .Values.configMap.phish_server_key_path}}\"\n\t},\n\t\"db_name\": \"{{- .Values.configMap.db_name}}\",\n\t\"db_path\":
+    \"{{- .Values.configMap.db_path}}\",\n\t\"migrations_prefix\": \"db/db_\",\n\t\"contact_address\":
+    \"{{- .Values.configMap.contact_address }}\",\n\t\"logging\": {\n\t\t\"filename\": \"{{- .Values.configMap.logging_filename}}\",\n\t\t\"level\": \"{{- .Values.configMap.logging_level}}\"\n\t}\n}\n"
+
+{{- end }}
+
+  
